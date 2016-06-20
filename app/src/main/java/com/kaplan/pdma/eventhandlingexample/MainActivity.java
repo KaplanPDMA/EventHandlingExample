@@ -7,41 +7,58 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.sql.Time;
+
 public class MainActivity extends AppCompatActivity {
+
+    int count = 0;
+    Boolean done = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = (TextView) findViewById(R.id.StatusTextView);
+        final TextView StatusText = (TextView) findViewById(R.id.StatusTextView);
         final TextView TimingRemaining = (TextView) findViewById(R.id.TimeRemaining);
+        final Button resetButton = (Button) findViewById(R.id.ResetButton);
+        resetButton.setVisibility(View.GONE);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count = 0;
+                done = false;
+                StatusText.setText("Click on button to start");
+                TimingRemaining.setText("10s");
+                resetButton.setVisibility(View.GONE);
+            }
+        });
+
         Button button = (Button) findViewById(R.id.MyButton);
         button.setOnClickListener(new View.OnClickListener() {
-            int count = 0;
-            Boolean done = false;
-
-            CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
-
-                public void onTick(long millisUntilFinished) {
-                    TimingRemaining.setText(""+ (millisUntilFinished/1000) +"s");
-                }
-
-                public void onFinish() {
-                    done = true;
-                    textView.setText("You had clicked " + count + " times in 10s");
-                    TimingRemaining.setText("Time's up");
-                }
-            };
 
             @Override
             public void onClick(View view) {
-                if(!done) {
-                    if(count == 0) {
-                        countDownTimer.start(); //start on first click
+                if (!done) {
+                    if (count == 0) {
+
+                        CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+
+                            public void onTick(long millisUntilFinished) {
+                                TimingRemaining.setText("" + (millisUntilFinished / 1000) + "s");
+                            }
+
+                            public void onFinish() {
+                                done = true;
+                                StatusText.setText("You had clicked " + count + " times in 10s");
+                                TimingRemaining.setText("Time's up");
+                                resetButton.setVisibility(View.VISIBLE);
+                            }
+                        }.start();
                     }
 
-                    textView.setText("clicked " + (++count) + " times");
+                    StatusText.setText("clicked " + (++count) + " times");
                 }
             }
         });

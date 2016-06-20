@@ -3,4 +3,5 @@
     <string name="status">Status</string>
     <string name="button_text">Click on me!</string>
     <string name="time_remaining">10s</string>
+    <string name="reset_button_text">Reset</string>
 </resources>
